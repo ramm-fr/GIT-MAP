@@ -425,9 +425,25 @@ function showToast(message) {
 
 async function fetchEvents() {
   try {
-    const response = await fetch('/api/events?per_page=12');
-    if (!response.ok) throw new Error(`GitHub proxy error ${response.status}`);
-    const data = await response.json();
+    let data = null;
+    // Try local proxy first (for hosted backends). If it fails, fall back to public GitHub API.
+    try {
+      const response = await fetch('/api/events?per_page=12');
+      if (response.ok) {
+        data = await response.json();
+      } else {
+        throw new Error(`Local proxy returned ${response.status}`);
+      }
+    } catch (localErr) {
+      console.warn('Local /api/events failed, falling back to public GitHub API.', localErr);
+      const ghResp = await fetch('https://api.github.com/events?per_page=12');
+      if (ghResp.ok) {
+        data = await ghResp.json();
+      } else {
+        throw new Error(`GitHub API error ${ghResp.status}`);
+      }
+    }
+
     state.events = Array.isArray(data) ? data.filter((item) => item && item.type) : [];
     renderEvents(true);
     els.liveIndicator.textContent = '●';
