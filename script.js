@@ -440,7 +440,18 @@ async function fetchEvents() {
       if (ghResp.ok) {
         data = await ghResp.json();
       } else {
-        throw new Error(`GitHub API error ${ghResp.status}`);
+        // If public API fails (rate limit or network), use local fallback JSON packaged with the site
+        console.warn('Public GitHub API failed, attempting local fallback JSON.', ghResp.status);
+        try {
+          const fallbackResp = await fetch('/events_fallback.json');
+          if (fallbackResp.ok) {
+            data = await fallbackResp.json();
+          } else {
+            throw new Error(`Fallback JSON not available ${fallbackResp.status}`);
+          }
+        } catch (fbErr) {
+          throw new Error(`GitHub API error ${ghResp.status}`);
+        }
       }
     }
 
