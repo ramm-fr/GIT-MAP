@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Live Globe</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-card">
+        <div class="loading-ring"></div>
+        <h1>GitHub Live Map</h1>
+        <p>Streaming worldwide public GitHub activity.</p>
+      </div>
+    </div>
+
+    <div class="map-shell">
+      <div id="scene-container" class="scene-container"></div>
+      <div class="hud-overlay">
+        <div class="hud-card title-card">
+          <h1>GitHub Live Map</h1>
+          <p>Live projects and users flowing across the map.</p>
+        </div>
+        <div class="hud-card stats-card">
+          <div>Projects <strong id="total-events">0</strong></div>
+          <div>Pushes <strong id="push-count">0</strong></div>
+          <div>Live <strong id="live-indicator">●</strong></div>
+        </div>
+      </div>
+      <div id="feed-panel" class="feed-panel">
+        <div class="feed-panel-header">
+          <div class="feed-title">Live Activity</div>
+          <div class="feed-actions">
+            <button id="refresh-feed" class="feed-action-button" type="button">Refresh</button>
+            <button id="close-feed" class="feed-action-button feed-close-button" type="button">Close</button>
+          </div>
+        </div>
+        <div id="feed-items" class="feed-items"></div>
+      </div>
+      <button id="open-feed" class="open-feed-button" aria-label="Open feed" type="button">Live</button>
+      <div id="profile-panel" class="profile-panel">
+        <button id="close-profile" class="profile-close" aria-label="Close profile">×</button>
+        <div class="profile-content">
+          <img id="profile-avatar" src="" alt="avatar" />
+          <div class="profile-info">
+            <h3 id="profile-name">Name</h3>
+            <div id="profile-login" class="profile-login">@login</div>
+            <p id="profile-bio" class="profile-bio"></p>
+            <div class="profile-stats">
+              <span id="profile-followers">0 followers</span>
+              <span id="profile-following">0 following</span>
+              <a id="profile-link" href="#" target="_blank">View on GitHub</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="event-toast" class="event-toast"></div>
+
+    <script src="./vendor/gsap/gsap.min.js"></script>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "./vendor/three/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module" src="./script.js?v=citytest-20260701"></script>
+  </body>
+</html>
