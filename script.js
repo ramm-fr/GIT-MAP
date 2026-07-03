@@ -45,7 +45,8 @@ const camera = new THREE.PerspectiveCamera(48, 1, 0.1, 100);
 camera.position.set(0, 0, 5.5);
 
 const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+const isMobile = /Android|iPhone|iPad|iPod|webOS/i.test(navigator.userAgent) || window.innerWidth < 768;
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.5 : 2));
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.15;
@@ -77,7 +78,12 @@ controls.minDistance = 0.35;
 controls.maxDistance = 15.0;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 0.14;
-controls.rotateSpeed = 0.75;
+controls.rotateSpeed = isMobile ? 0.55 : 0.75;
+// Improve touch handling on mobile
+if (isMobile) {
+  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.DOLLY_PAN };
+  camera.position.set(0, 0, 6.2);
+}
 
 const earthGroup = new THREE.Group();
 scene.add(earthGroup);
@@ -98,7 +104,8 @@ const starField = new THREE.Points(
   new THREE.PointsMaterial({ color: 0xffffff, size: 0.01, transparent: true, opacity: 0.18 })
 );
 const starPositions = [];
-for (let i = 0; i < 1600; i += 1) {
+const starCount = isMobile ? 600 : 1600;
+for (let i = 0; i < starCount; i += 1) {
   const radius = 18 + Math.random() * 20;
   const theta = Math.random() * Math.PI * 2;
   const phi = Math.acos(2 * Math.random() - 1);
@@ -375,6 +382,24 @@ function onSceneClick(e) {
   showToast('No user associated with that selection.');
 }
 els.sceneContainer.addEventListener('click', onSceneClick, { passive: true });
+// Mobile: prevent orbit controls from triggering profile on drag
+let touchStartPos = null;
+els.sceneContainer.addEventListener('touchstart', (e) => {
+  if (e.touches.length === 1) {
+    touchStartPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }
+}, { passive: true });
+els.sceneContainer.addEventListener('touchend', (e) => {
+  if (!touchStartPos) return;
+  const touch = e.changedTouches[0];
+  const dx = touch.clientX - touchStartPos.x;
+  const dy = touch.clientY - touchStartPos.y;
+  // Only trigger click if it was a tap (not a drag)
+  if (Math.abs(dx) < 12 && Math.abs(dy) < 12) {
+    onSceneClick({ clientX: touch.clientX, clientY: touch.clientY });
+  }
+  touchStartPos = null;
+}, { passive: true });
 
 async function openProfileFor(login) {
   if (!login) return showToast('No user found.');
@@ -473,7 +498,8 @@ async function fetchEvents() {
 }
 
 function renderEvents(animatePulse = false) {
-  const topEvents = state.events.slice(0, 8);
+  const maxEvents = isMobile ? 5 : 8;
+  const topEvents = state.events.slice(0, maxEvents);
   if (animatePulse && topEvents.length) {
     topEvents.forEach((event, index) => {
       window.setTimeout(() => createPulse(event), index * 220);
