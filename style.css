@@ -165,6 +165,7 @@ body::before {
   display: block;
   width: 100%;
   height: 100%;
+  touch-action: pan-x pan-y;
 }
 
 .feed-panel {
@@ -315,6 +316,9 @@ body::before {
   display: none;
 }
 
+/* ═══════════════════════════════════════════════════════
+   TABLET — max-width: 860px
+   ═══════════════════════════════════════════════════════ */
 @media (max-width: 860px) {
   body {
     overflow: hidden;
@@ -324,6 +328,13 @@ body::before {
     flex-direction: column;
     gap: 0.6rem;
     align-items: stretch;
+    padding: 1rem;
+  }
+
+  .hud-card {
+    min-width: unset;
+    border-radius: 18px;
+    padding: 0.85rem 1rem;
   }
 
   .stats-card {
@@ -336,6 +347,309 @@ body::before {
     left: 1rem;
     right: 1rem;
     bottom: 1rem;
+    border-radius: 22px;
+  }
+
+  .profile-panel {
+    width: calc(100% - 2rem);
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE — max-width: 520px
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 520px) {
+  body {
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .loading-card {
+    padding: 1.5rem 1.5rem;
+    border-radius: 20px;
+  }
+
+  .loading-card h1 {
+    font-size: 1.15rem;
+  }
+
+  .loading-card p {
+    font-size: 0.85rem;
+  }
+
+  .loading-ring {
+    width: 40px;
+    height: 40px;
+  }
+
+  .hud-overlay {
+    flex-direction: column;
+    gap: 0.45rem;
+    align-items: stretch;
+    padding: 0.75rem;
+  }
+
+  .hud-card {
+    min-width: unset;
+    border-radius: 16px;
+    padding: 0.7rem 0.85rem;
+    backdrop-filter: blur(10px);
+  }
+
+  .title-card h1 {
+    font-size: 0.95rem;
+  }
+
+  .title-card p {
+    font-size: 0.78rem;
+  }
+
+  .stats-card {
+    gap: 0.6rem;
+    justify-content: space-between;
+  }
+
+  .stats-card div {
+    font-size: 0.72rem;
+    gap: 0.15rem;
+  }
+
+  .stats-card strong {
+    font-size: 0.88rem;
+  }
+
+  /* Feed panel — full width, shorter height */
+  .feed-panel {
+    width: calc(100% - 1.2rem);
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    max-height: 38vh;
+    border-radius: 18px;
+  }
+
+  .feed-panel-header {
+    padding: 0.75rem 0.85rem 0.6rem;
+  }
+
+  .feed-title {
+    font-size: 0.88rem;
+  }
+
+  .feed-action-button {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .feed-items {
+    max-height: calc(38vh - 60px);
+    padding: 0.5rem 0.7rem 0.75rem;
+  }
+
+  .feed-item {
+    padding: 0.7rem 0.8rem;
+    border-radius: 14px;
+    margin-bottom: 0.55rem;
+  }
+
+  .feed-item strong {
+    font-size: 0.88rem;
+  }
+
+  .feed-meta {
+    font-size: 0.76rem;
+  }
+
+  /* Open feed button */
+  .open-feed-button {
+    width: 48px;
+    height: 48px;
+    right: 0.8rem;
+    bottom: 0.8rem;
+    font-size: 0.75rem;
+  }
+
+  /* Profile panel — full width bottom sheet style */
+  .profile-panel {
+    width: calc(100% - 1.2rem);
+    left: 0.6rem;
+    right: 0.6rem;
+    bottom: 0.6rem;
+    max-height: 44vh;
+    border-radius: 18px;
+    padding: 0.7rem;
+  }
+
+  .profile-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.6rem;
+  }
+
+  .profile-content img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+  }
+
+  .profile-info h3 {
+    font-size: 0.95rem;
+  }
+
+  .profile-login {
+    font-size: 0.82rem;
+  }
+
+  .profile-bio {
+    font-size: 0.82rem;
+  }
+
+  .profile-stats {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  /* Toast */
+  .event-toast {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+  }
+
+  /* Event badges on 3D scene — smaller for mobile */
+  .event-badge {
+    font-size: 0.65rem;
+    padding: 0.08rem 0.14rem;
+    border-radius: 3px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SMALL MOBILE — max-width: 360px
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .hud-overlay {
+    padding: 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .hud-card {
+    padding: 0.55rem 0.7rem;
+    border-radius: 14px;
+  }
+
+  .title-card h1 {
+    font-size: 0.85rem;
+  }
+
+  .title-card p {
+    display: none;
+  }
+
+  .stats-card div {
+    font-size: 0.68rem;
+  }
+
+  .stats-card strong {
+    font-size: 0.8rem;
+  }
+
+  .feed-panel {
+    max-height: 35vh;
+    border-radius: 14px;
+  }
+
+  .feed-items {
+    max-height: calc(35vh - 54px);
+  }
+
+  .feed-item {
+    padding: 0.6rem 0.65rem;
+    border-radius: 12px;
+  }
+
+  .profile-panel {
+    max-height: 40vh;
+    border-radius: 14px;
+  }
+
+  .profile-content img {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   LANDSCAPE MOBILE — short height
+   ═══════════════════════════════════════════════════════ */
+@media (max-height: 500px) {
+  .hud-overlay {
+    padding: 0.5rem;
+    gap: 0.3rem;
+  }
+
+  .hud-card {
+    padding: 0.5rem 0.7rem;
+    border-radius: 12px;
+  }
+
+  .title-card p {
+    display: none;
+  }
+
+  .feed-panel {
+    max-height: 50vh;
+    bottom: 0.5rem;
+  }
+
+  .feed-items {
+    max-height: calc(50vh - 54px);
+  }
+
+  .profile-panel {
+    max-height: 60vh;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   TOUCH DEVICE IMPROVEMENTS
+   ═══════════════════════════════════════════════════════ */
+@media (hover: none) and (pointer: coarse) {
+  .feed-action-button {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .open-feed-button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+
+  .profile-close {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+  }
+
+  .feed-item {
+    padding: 0.85rem 0.9rem;
   }
 }
 
